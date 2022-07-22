@@ -20,27 +20,27 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       judul_buku: {
-        type: Sequelize.STRING(128),
+        type: DataTypes.STRING(128),
         allowNull: false,
       },
       nama_penulis: {
-        type: Sequelize.STRING(128),
+        type: DataTypes.STRING(128),
         allowNull: false,
       },
       nama_penerbit: {
-        type: Sequelize.STRING(128),
+        type: DataTypes.STRING(128),
         allowNull: false,
       },
       tahun_penerbit: {
-        type: Sequelize.STRING(4),
+        type: DataTypes.STRING(4),
         allowNull: false,
       },
       stok: {
-        type: Sequelize.INTEGER,
+        type: DataTypes.INTEGER,
         allowNull: false,
       },
       id_rak_buku: {
-        type: Sequelize.UUID,
+        type: DataTypes.UUID,
         allowNull: false,
       },
     },
