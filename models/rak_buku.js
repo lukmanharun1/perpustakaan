@@ -19,16 +19,8 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: DataTypes.UUIDV4,
         allowNull: false,
       },
-      operasi: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
-      investasi: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
-      pendanaan: {
-        type: DataTypes.BIGINT,
+      nama: {
+        type: DataTypes.STRING(50),
         allowNull: false,
       },
     },
