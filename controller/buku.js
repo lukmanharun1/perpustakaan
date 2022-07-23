@@ -244,9 +244,73 @@ const getById = async (req, res) => {
     );
   }
 };
+
+const updateNamaRakBuku = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { nama_rak_buku } = req.body;
+    // cari data buku
+    const getBukuById = await Buku.findByPk(id);
+    if (!getBukuById) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Data buku tidak ada!",
+        },
+        404
+      );
+    }
+    // cari rak buku berdasarkan nama
+    const getRakBuku = await RakBuku.findOne({
+      where: {
+        nama: nama_rak_buku,
+      },
+    });
+
+    if (!getRakBuku) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Nama rak buku tidak ada!",
+        },
+        404
+      );
+    }
+    // update id_rak_buku di table buku
+    getBukuById.id_rak_buku = getRakBuku.id;
+    const updateBuku = await getBukuById.save();
+    if (!updateBuku) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Data buku gagal diupdate!",
+        },
+        400
+      );
+    }
+    await deleteKeys("getBuku:*");
+    return response(res, {
+      status: "success",
+      message: "Nama rak buku berhasil diupdate!",
+    });
+  } catch (error) {
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      500
+    );
+  }
+};
 module.exports = {
   getAll,
   create,
   update,
   getById,
+  updateNamaRakBuku,
 };
