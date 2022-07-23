@@ -16,5 +16,11 @@ router.get(
   getBukuByIdRedis,
   controller.getById
 );
+router.patch(
+  "/:id",
+  validation.updateNamaRakBuku(),
+  validate,
+  controller.updateNamaRakBuku
+);
 
 module.exports = router;
