@@ -7,5 +7,6 @@ const validation = require("../validation/buku");
 const { getBukuRedis } = require("../middleware/redis");
 
 router.get("/", validation.getAll(), validate, getBukuRedis, controller.getAll);
+router.post("/", validation.create(), validate, controller.create);
 
 module.exports = router;
