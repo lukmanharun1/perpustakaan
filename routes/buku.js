@@ -22,6 +22,6 @@ router.patch(
   validate,
   controller.updateNamaRakBuku
 );
-router.delete("/:id", validation.delete(), validate, controller.delete);
+router.delete("/:id", validation.destroy(), validate, controller.destroy);
 
 module.exports = router;

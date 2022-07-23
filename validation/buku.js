@@ -45,10 +45,13 @@ const updateNamaRakBuku = () => [
   body("nama_rak_buku").notEmpty().isString(),
 ];
 
+const destroy = () => [param("id").notEmpty().isUUID()];
+
 module.exports = {
   getAll,
   create,
   update,
   getById,
   updateNamaRakBuku,
+  destroy,
 };
