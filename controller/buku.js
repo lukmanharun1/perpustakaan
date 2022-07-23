@@ -175,6 +175,7 @@ const update = async (req, res) => {
         400
       );
     }
+    await deleteKeys("getBuku:*");
     return response(res, {
       status: "success",
       message: "Data buku berhasil diupdate!",
