@@ -1,6 +1,7 @@
 const { Buku, RakBuku, Sequelize, sequelize } = require("../models");
 const response = require("../helper/response");
 const redisConnection = require("../config/redis");
+const { deleteKeys } = require("../helper/redis");
 
 const getAll = async (req, res) => {
   try {
@@ -122,14 +123,8 @@ const create = async (req, res) => {
         400
       );
     }
-    // delete getBuku di redis jika ada
-    const keysGetBuku = await redisConnection.keys("getBuku:*");
-    // commit transaction
-    const promises = [transaction.commit()];
-    if (keysGetBuku.length > 0) {
-      promises.push(redisConnection.del(keysGetBuku));
-    }
-    await Promise.all(promises);
+    // delete getBuku di redis | commit transaction
+    await Promise.all([deleteKeys("getBuku:*"), transaction.commit()]);
     return response(res, {
       status: "success",
       message: "Data buku berhasil ditambahkan!",
@@ -148,7 +143,56 @@ const create = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  try {
+    const { judul_buku, nama_penulis, nama_penerbit, tahun_penerbit, stok } =
+      req.body;
+    const { id } = req.params;
+    const findBukuById = await Buku.findByPk(id);
+    if (findBukuById) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Data buku tidak ada!",
+        },
+        404
+      );
+    }
+    if (judul_buku) findBukuById.judul_buku = judul_buku;
+    if (nama_penulis) findBukuById.nama_penulis = nama_penulis;
+    if (nama_penerbit) findBukuById.nama_penerbit = nama_penerbit;
+    if (tahun_penerbit) findBukuById.tahun_penerbit = tahun_penerbit;
+    if (stok) findBukuById.stok = stok;
+    const updateBuku = await findBukuById.save();
+    if (updateBuku) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Data buku gagal diupdate!",
+        },
+        400
+      );
+    }
+    return response(res, {
+      status: "success",
+      message: "Data buku berhasil diupdate!",
+    });
+  } catch (error) {
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      500
+    );
+  }
+};
+
 module.exports = {
   getAll,
   create,
+  update,
 };

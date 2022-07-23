@@ -1,4 +1,4 @@
-const { query, body } = require("express-validator");
+const { query, body, param } = require("express-validator");
 const tahunSekarang = new Date().getFullYear();
 const getAll = () => [
   query("judul_buku").optional().isString(),
@@ -26,6 +26,7 @@ const create = () => [
 ];
 
 const update = () => [
+  param("id").notEmpty().isUUID(),
   body("judul_buku").optional().isString(),
   body("nama_penulis").optional().isString(),
   body("nama_penerbit").optional().isString(),
