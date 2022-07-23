@@ -1,4 +1,4 @@
-const { Buku, RakBuku, Sequelize } = require("../models");
+const { Buku, RakBuku, Sequelize, sequelize } = require("../models");
 const response = require("../helper/response");
 const redisConnection = require("../config/redis");
 
@@ -74,6 +74,81 @@ const getAll = async (req, res) => {
   }
 };
 
+const create = async (req, res) => {
+  // start transaction
+  const transaction = await sequelize.transaction();
+  try {
+    const {
+      judul_buku,
+      nama_penulis,
+      nama_penerbit,
+      tahun_penerbit,
+      stok,
+      nama_rak_buku,
+    } = req.body;
+    // findOrCreate rak_buku
+    const rakBuku = await RakBuku.findOrCreate({
+      where: { nama: nama_rak_buku },
+      defaults: { nama: nama_rak_buku },
+      transaction,
+    });
+    // findOrCreate buku
+    const createBuku = await Buku.findOrCreate({
+      where: {
+        judul_buku,
+        nama_penulis,
+        nama_penerbit,
+        tahun_penerbit,
+        id_rak_buku: rakBuku[0].id,
+      },
+      defaults: {
+        judul_buku,
+        nama_penulis,
+        nama_penerbit,
+        tahun_penerbit,
+        stok,
+        id_rak_buku: rakBuku[0].id,
+      },
+      transaction,
+    });
+    // cek buku duplikat
+    if (!createBuku[1]) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Data buku sudah ada!",
+        },
+        400
+      );
+    }
+    // delete getBuku di redis jika ada
+    const keysGetBuku = await redisConnection.keys("getBuku:*");
+    // commit transaction
+    const promises = [transaction.commit()];
+    if (keysGetBuku.length > 0) {
+      promises.push(redisConnection.del(keysGetBuku));
+    }
+    await Promise.all(promises);
+    return response(res, {
+      status: "success",
+      message: "Data buku berhasil ditambahkan!",
+    });
+  } catch (error) {
+    // rollback transaction
+    await transaction.rollback();
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      500
+    );
+  }
+};
+
 module.exports = {
   getAll,
+  create,
 };
