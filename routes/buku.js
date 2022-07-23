@@ -8,5 +8,6 @@ const { getBukuRedis } = require("../middleware/redis");
 
 router.get("/", validation.getAll(), validate, getBukuRedis, controller.getAll);
 router.post("/", validation.create(), validate, controller.create);
+router.put("/", validation.update(), validate, controller.update);
 
 module.exports = router;
