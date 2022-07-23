@@ -39,9 +39,16 @@ const update = () => [
 ];
 
 const getById = () => [param("id").notEmpty().isUUID()];
+
+const updateNamaRakBuku = () => [
+  param("id").notEmpty().isUUID(),
+  body("nama_rak_buku").notEmpty().isString(),
+];
+
 module.exports = {
   getAll,
   create,
   update,
   getById,
+  updateNamaRakBuku,
 };
