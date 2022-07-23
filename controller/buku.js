@@ -307,10 +307,55 @@ const updateNamaRakBuku = async (req, res) => {
     );
   }
 };
+
+const destroy = async (req, res) => {
+  try {
+    const { id } = req.params;
+    // cari data buku berdasarkan id
+    const getBukuById = await Buku.findByPk(id);
+    if (!getBukuById) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Data buku tidak ada!",
+        },
+        404
+      );
+    }
+    // delete buku berdasarkan id
+    const deleteBuku = await getBukuById.destroy();
+    if (!deleteBuku) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Data buku gagal dihapus!",
+        },
+        400
+      );
+    }
+    await deleteKeys("getBuku:*");
+    return response(res, {
+      status: "success",
+      message: "Data buku berhasil dihapus!",
+    });
+  } catch (error) {
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      500
+    );
+  }
+};
 module.exports = {
   getAll,
   create,
   update,
   getById,
   updateNamaRakBuku,
+  destroy,
 };
