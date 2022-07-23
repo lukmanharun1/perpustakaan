@@ -149,7 +149,7 @@ const update = async (req, res) => {
       req.body;
     const { id } = req.params;
     const findBukuById = await Buku.findByPk(id);
-    if (findBukuById) {
+    if (!findBukuById) {
       return response(
         res,
         {
@@ -165,7 +165,7 @@ const update = async (req, res) => {
     if (tahun_penerbit) findBukuById.tahun_penerbit = tahun_penerbit;
     if (stok) findBukuById.stok = stok;
     const updateBuku = await findBukuById.save();
-    if (updateBuku) {
+    if (!updateBuku) {
       return response(
         res,
         {
