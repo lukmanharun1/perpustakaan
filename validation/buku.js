@@ -43,4 +43,5 @@ module.exports = {
   getAll,
   create,
   update,
+  getById,
 };
