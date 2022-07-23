@@ -38,6 +38,7 @@ const update = () => [
   body("stok").optional().isInt({ min: 1, max: 10000 }),
 ];
 
+const getById = () => [param("id").notEmpty().isUUID()];
 module.exports = {
   getAll,
   create,
