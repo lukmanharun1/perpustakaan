@@ -192,8 +192,61 @@ const update = async (req, res) => {
   }
 };
 
+const getById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const getBukuById = await Buku.findOne({
+      where: {
+        id,
+      },
+      attributes: [
+        "id",
+        "judul_buku",
+        "nama_penulis",
+        "nama_penerbit",
+        "tahun_penerbit",
+        "stok",
+      ],
+      include: {
+        model: RakBuku,
+        as: "rak_buku",
+        attributes: ["nama"],
+      },
+    });
+    if (!getBukuById) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "Data buku tidak ada!",
+        },
+        404
+      );
+    }
+    // set getBuku redis
+    await redisConnection.setEx(
+      `getBuku:${id}`,
+      3600,
+      JSON.stringify(getBukuById)
+    );
+    return response(res, {
+      status: "success",
+      data: getBukuById,
+    });
+  } catch (error) {
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      500
+    );
+  }
+};
 module.exports = {
   getAll,
   create,
   update,
+  getById,
 };
