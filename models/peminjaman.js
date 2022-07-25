@@ -20,11 +20,12 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       tanggal_peminjaman: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
+        defaultValue: DataTypes.NOW,
         allowNull: false,
       },
       tanggal_pengembalian: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false,
       },
       id_buku: {

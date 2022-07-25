@@ -6,7 +6,7 @@ module.exports = {
       "pengembalian",
       field(Sequelize, {
         tanggal_pengembalian: {
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
           allowNull: false,
         },
         id_peminjaman: {

@@ -6,11 +6,11 @@ module.exports = {
       "peminjaman",
       field(Sequelize, {
         tanggal_peminjaman: {
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
           allowNull: false,
         },
         tanggal_pengembalian: {
-          type: Sequelize.DATE,
+          type: Sequelize.DATEONLY,
           allowNull: false,
         },
         id_buku: {
