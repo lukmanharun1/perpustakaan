@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Pengembalian extends Model {
+  class Denda extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Pengembalian.init(
+  Denda.init(
     {
       id: {
         type: DataTypes.UUID,
@@ -21,25 +21,40 @@ module.exports = (sequelize, DataTypes) => {
       },
       tanggal_pengembalian: {
         type: DataTypes.DATEONLY,
-        allowNull: false,
       },
-      id_peminjaman: {
+      id_buku: {
         type: DataTypes.UUID,
         allowNull: false,
       },
-      denda: {
-        type: DataTypes.INTEGER,
+      id_mahasiswa: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      tanggal_jatuh_tempo: {
+        type: DataTypes.DATEONLY,
+      },
+      tanggal_peminjaman: {
+        type: DataTypes.DATEONLY,
+      },
+      status: {
+        type: DataTypes.ENUM(
+          "hilang",
+          "rusak",
+          "terlambat",
+          "hilang dan terlambat",
+          "rusak dan terlambat"
+        ),
       },
     },
     {
       sequelize,
       timestamps: true,
-      modelName: "Pengembalian",
-      tableName: "pengembalian",
+      modelName: "Denda",
+      tableName: "denda",
       freezeTableName: true,
       underscored: true,
       paranoid: true,
     }
   );
-  return Pengembalian;
+  return Denda;
 };

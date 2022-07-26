@@ -3,7 +3,7 @@ const field = require("../constant/field");
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable(
-      "pengembalian",
+      "denda",
       field(Sequelize, {
         tanggal_pengembalian: {
           type: Sequelize.DATEONLY,
@@ -36,6 +36,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("pengembalian");
+    await queryInterface.dropTable("denda");
   },
 };
