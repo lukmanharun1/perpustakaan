@@ -9,6 +9,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Denda.belongsTo(models.Mahasiswa, {
+        foreignKey: "id_mahasiswa",
+        as: "mahasiswa",
+      });
+      Denda.belongsTo(models.Buku, {
+        foreignKey: "id_buku",
+        as: "buku",
+      });
     }
   }
   Denda.init(
