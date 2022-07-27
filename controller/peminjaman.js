@@ -2,6 +2,7 @@ const {
   Buku,
   Mahasiswa,
   Peminjaman,
+  RakBuku,
   Sequelize,
   sequelize,
 } = require("../models");
@@ -98,6 +99,56 @@ const create = async (req, res) => {
   }
 };
 
+const getAll = async (req, res) => {
+  try {
+    const getPeminjaman = await Peminjaman.findAll({
+      include: [
+        {
+          model: Buku,
+          as: "buku",
+          attributes: [
+            "judul_buku",
+            "nama_penulis",
+            "nama_penerbit",
+            "tahun_penerbit",
+            "stok",
+          ],
+          include: {
+            model: RakBuku,
+            as: "rak_buku",
+            attributes: ["nama"],
+          },
+        },
+        {
+          model: Mahasiswa,
+          as: "mahasiswa",
+          attributes: ["jurusan", "no_telp", "alamat", "nama_lengkap"],
+        },
+      ],
+      attributes: [
+        "id",
+        "tanggal_peminjaman",
+        "tanggal_pengembalian",
+        "id_buku",
+        "id_mahasiswa",
+      ],
+    });
+    return response(res, {
+      status: "success",
+      data: getPeminjaman,
+    });
+  } catch (error) {
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      500
+    );
+  }
+};
 module.exports = {
   create,
+  getAll,
 };
