@@ -6,5 +6,6 @@ const validate = require("../middleware/validate");
 const validation = require("../validation/denda");
 
 router.post("/", validation.create(), validate, controller.create);
+router.get("/", controller.getAll);
 
 module.exports = router;
