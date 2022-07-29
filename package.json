@@ -3,7 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon bin/www",
+    "test": "jest",
+    "migrate": "sequelize db:migrate",
+    "undo": "sequelize db:migrate:undo",
+    "undo:all": "sequelize db:migrate:undo:all",
+    "seed:all": "sequelize db:seed:all",
+    "seed": "sequelize db:seed",
+    "reset": "sequelize db:drop && sequelize db:create && npm run migrate && npm run seed:all"
   },
   "dependencies": {
     "debug": "~2.6.9",
