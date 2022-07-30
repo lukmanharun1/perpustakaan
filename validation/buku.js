@@ -18,7 +18,6 @@ const create = () => [
   body("nama_penerbit").notEmpty().isString(),
   body("tahun_penerbit")
     .notEmpty()
-    .isString()
     .isLength({ min: 4, max: 4 })
     .isInt({ min: 1990, max: tahunSekarang }),
   body("stok").notEmpty().isInt({ min: 1, max: 10000 }),
@@ -32,7 +31,6 @@ const update = () => [
   body("nama_penerbit").optional().isString(),
   body("tahun_penerbit")
     .optional()
-    .isString()
     .isLength({ min: 4, max: 4 })
     .isInt({ min: 1990, max: tahunSekarang }),
   body("stok").optional().isInt({ min: 1, max: 10000 }),
