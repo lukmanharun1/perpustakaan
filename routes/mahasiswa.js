@@ -7,5 +7,6 @@ const { getMahasiswaRedis } = require("../middleware/redis");
 const validation = require("../validation/mahasiswa");
 
 router.get("/", getMahasiswaRedis, controller.getAll);
+router.get("/:id", validation.getById(), validate, controller.getById);
 
 module.exports = router;
