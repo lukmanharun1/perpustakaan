@@ -29,7 +29,20 @@ const getBukuByIdRedis = async (req, res, next) => {
   next();
 };
 
+const getMahasiswaRedis = async (req, res, next) => {
+  const getMahasiswa = await redisConnection.get("getMahasiswa:");
+  if (getMahasiswa !== null) {
+    return response(res, {
+      status: "success",
+      data: JSON.parse(getMahasiswa),
+    });
+  }
+  console.log("data tidak ada di dalam redis");
+  next();
+};
+
 module.exports = {
   getBukuRedis,
   getBukuByIdRedis,
+  getMahasiswaRedis,
 };
