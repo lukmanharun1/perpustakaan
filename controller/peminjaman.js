@@ -28,7 +28,6 @@ const create = async (req, res) => {
         res,
         {
           status: "error",
-          message: "Data buku tidak ada!",
         },
         404
       );
@@ -42,14 +41,10 @@ const create = async (req, res) => {
       transaction,
     });
     if (!findMahasiswaById) {
-      return response(
-        res,
-        {
-          status: "error",
-          message: "Data mahasiswa tidak ada!",
-        },
-        404
-      );
+      throw {
+        message: "Data buku tidak ada!",
+        statusCode: 404,
+      };
     }
     // tambah data peminjaman dan tidak boleh meminjam buku yang sama
     const createPeminjaman = await Peminjaman.findOrCreate({
@@ -65,14 +60,10 @@ const create = async (req, res) => {
       transaction,
     });
     if (!createPeminjaman[1]) {
-      return response(
-        res,
-        {
-          status: "error",
-          message: "Tidak boleh meminjam buku yang sama!",
-        },
-        400
-      );
+      throw {
+        message: "Tidak boleh meminjam buku yang sama!",
+        statusCode: 404,
+      };
     }
     // update stok buku | kurangi stok buku - 1
     findBukuById.stok -= 1;
@@ -94,7 +85,7 @@ const create = async (req, res) => {
         status: "error",
         message: error.message,
       },
-      500
+      error.statusCode || 500
     );
   }
 };
