@@ -14,14 +14,10 @@ const create = async (req, res) => {
       transaction,
     });
     if (!findPeminjamanById) {
-      return response(
-        res,
-        {
-          status: "error",
-          message: "Data peminjaman tidak ada!",
-        },
-        404
-      );
+      throw {
+        message: "Data peminjaman tidak ada!",
+        statusCode: 404,
+      };
     }
     const {
       tanggal_peminjaman,
@@ -91,7 +87,7 @@ const create = async (req, res) => {
         status: "error",
         message: error.message,
       },
-      500
+      error.statusCode || 500
     );
   }
 };
