@@ -5,6 +5,26 @@ const create = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
     const { id_buku, id_mahasiswa, status } = req.body;
+    // cari id buku
+    const findBukuById = await Buku.findByPk(id_buku, {
+      transaction,
+    });
+    if (!findBukuById) {
+      throw {
+        message: "Data buku tidak ada!",
+        statusCode: 404,
+      };
+    }
+    // cari id mahasiswa
+    const findMahasiswaByIdS = await Mahasiswa.findByPk(id_mahasiswa, {
+      transaction,
+    });
+    if (!findMahasiswaByIdS) {
+      throw {
+        message: "Data mahasiswa tidak ada!",
+        statusCode: 404,
+      };
+    }
     // create data denda
     const createDenda = await Denda.create(
       {
@@ -42,7 +62,7 @@ const create = async (req, res) => {
         status: "error",
         message: error.message,
       },
-      500
+      error.statusCode || 500
     );
   }
 };
