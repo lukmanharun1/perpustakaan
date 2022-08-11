@@ -53,7 +53,7 @@ module.exports = (sequelize, DataTypes) => {
           "rusak dan terlambat"
         ),
       },
-      denda: {
+      nominal: {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
