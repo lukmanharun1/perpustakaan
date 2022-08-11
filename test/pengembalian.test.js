@@ -116,7 +116,12 @@ describe("POST /pengembalian", () => {
     const createPengembalian = await request(app)
       .post("/pengembalian")
       .set("Accept", "application/json")
-      .send({ tanggal_pengembalian, id_peminjaman, status: "rusak" })
+      .send({
+        tanggal_pengembalian,
+        id_peminjaman,
+        status: "rusak",
+        nominal: 10000,
+      })
       .expect(200);
 
     expect(createPengembalian.body).toEqual(
@@ -163,7 +168,12 @@ describe("POST /pengembalian", () => {
     const createPengembalian = await request(app)
       .post("/pengembalian")
       .set("Accept", "application/json")
-      .send({ tanggal_pengembalian, id_peminjaman, status: "hilang" })
+      .send({
+        tanggal_pengembalian,
+        id_peminjaman,
+        status: "hilang",
+        nominal: 12000,
+      })
       .expect(200);
 
     expect(createPengembalian.body).toEqual(
@@ -264,6 +274,7 @@ describe("POST /pengembalian", () => {
         tanggal_pengembalian: tanggal_pengembalian_terlambat,
         id_peminjaman,
         status: "rusak",
+        nominal: 6000,
       })
       .expect(200);
 
@@ -315,6 +326,7 @@ describe("POST /pengembalian", () => {
         tanggal_pengembalian: tanggal_pengembalian_terlambat,
         id_peminjaman,
         status: "hilang",
+        nominal: 7000,
       })
       .expect(200);
 
