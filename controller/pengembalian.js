@@ -1,16 +1,14 @@
 const { Peminjaman, Denda, Buku, sequelize, Sequelize } = require("../models");
+const countDiffDays = require("../helper/countDiffDays");
 const response = require("../helper/response");
 
 const create = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
-    let { tanggal_pengembalian, id_peminjaman, status } = req.body;
+    let { tanggal_pengembalian, id_peminjaman, status, nominal = 0 } = req.body;
     let isDenda = false;
     // cari id peminjaman
-    const findPeminjamanById = await Peminjaman.findOne({
-      where: {
-        id: id_peminjaman,
-      },
+    const findPeminjamanById = await Peminjaman.findByPk(id_peminjaman, {
       transaction,
     });
     if (!findPeminjamanById) {
@@ -40,15 +38,26 @@ const create = async (req, res) => {
     }
     if (isDenda) {
       // create denda
-      const createDenda = await Denda.create({
-        tanggal_peminjaman,
-        id_buku,
-        id_mahasiswa,
-        tanggal_jatuh_tempo,
-        status,
-        tanggal_pengembalian,
-        transaction,
-      });
+      // hitung jumlah nominal denda 1 hari = 1000
+      nominal =
+        countDiffDays(
+          tanggal_pengembalian,
+          findPeminjamanById.tanggal_pengembalian
+        ) *
+          1000 +
+        nominal;
+      const createDenda = await Denda.create(
+        {
+          tanggal_peminjaman,
+          id_buku,
+          id_mahasiswa,
+          tanggal_jatuh_tempo,
+          status,
+          tanggal_pengembalian,
+          nominal,
+        },
+        { transaction }
+      );
       if (!createDenda) {
         throw new Error("Data denda gagal dibuat!");
       }
