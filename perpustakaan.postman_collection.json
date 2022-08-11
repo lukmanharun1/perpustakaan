@@ -186,12 +186,23 @@
 			"item": [
 				{
 					"name": "create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tanggal_pengembalian\": \"2022-07-27\",\n    \"id_peminjaman\": \"9f566a7c-8134-43c1-ae78-4d462578e8b8\"\n}",
+							"raw": "{\n    \"tanggal_pengembalian\": \"2022-07-29\",\n    \"id_peminjaman\": \"9f566a7c-8134-43c1-ae78-4d462578e8b8\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -203,7 +214,8 @@
 							"host": [
 								"{{host}}pengembalian"
 							]
-						}
+						},
+						"description": "status: optional | enum\\['hilang', 'rusak'\\],\n\nnominal: optional | int // nominal harus diisi ketika status di isi"
 					},
 					"response": []
 				}
@@ -219,7 +231,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id_buku\": \"11e962b6-7465-4800-a139-83eefa59877b\",\n    \"id_mahasiswa\": \"065210bb-d108-41e0-8edb-58480ff5e78c\",\n    \"status\": \"hilang\"\n}",
+							"raw": "{\n    \"id_buku\": \"11e962b6-7465-4800-a139-83eefa59877b\",\n    \"id_mahasiswa\": \"065210bb-d108-41e0-8edb-58480ff5e78c\",\n    \"status\": \"hilang\",\n    \"nominal\": 10000\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -273,7 +285,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tanggal_pengembalian\": \"2022-08-31\",\n    \"id_buku\": \"11e962b6-7465-4800-a139-83eefa59877b\",\n    \"id_mahasiswa\": \"065210bb-d108-41e0-8edb-58480ff5e78c\"\n}",
+							"raw": "{\n    \"tanggal_pengembalian\": \"2022-08-31\",\n    \"id_buku\": \"58c1901b-39cf-4d45-8aa5-cd2fa9cb8ff2\",\n    \"id_mahasiswa\": \"065210bb-d108-41e0-8edb-58480ff5e78c\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
