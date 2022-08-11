@@ -24,7 +24,7 @@ describe("POST /denda", () => {
     const createDenda = await request(app)
       .post("/denda")
       .set("Accept", "application/json")
-      .send({ id_buku, id_mahasiswa, status: "hilang" })
+      .send({ id_buku, id_mahasiswa, status: "hilang", nominal: 10000 })
       .expect(200);
 
     expect(createDenda.body).toEqual(
@@ -56,7 +56,7 @@ describe("POST /denda", () => {
     const createDenda = await request(app)
       .post("/denda")
       .set("Accept", "application/json")
-      .send({ id_buku, id_mahasiswa, status: "rusak" })
+      .send({ id_buku, id_mahasiswa, status: "rusak", nominal: 5000 })
       .expect(200);
 
     expect(createDenda.body).toEqual(
@@ -78,7 +78,12 @@ describe("POST /denda", () => {
     const createDenda = await request(app)
       .post("/denda")
       .set("Accept", "application/json")
-      .send({ id_buku: uuidv4, id_mahasiswa: uuidv4, status: "hilang" })
+      .send({
+        id_buku: uuidv4,
+        id_mahasiswa: uuidv4,
+        status: "hilang",
+        nominal: 5000,
+      })
       .expect(404);
 
     expect(createDenda.body).toEqual(
@@ -101,7 +106,7 @@ describe("POST /denda", () => {
     const createDenda = await request(app)
       .post("/denda")
       .set("Accept", "application/json")
-      .send({ id_buku, id_mahasiswa: uuidv4, status: "hilang" })
+      .send({ id_buku, id_mahasiswa: uuidv4, status: "hilang", nominal: 5000 })
       .expect(404);
 
     expect(createDenda.body).toEqual(
