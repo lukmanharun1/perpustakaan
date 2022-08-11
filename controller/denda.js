@@ -4,7 +4,7 @@ const response = require("../helper/response");
 const create = async (req, res) => {
   const transaction = await sequelize.transaction();
   try {
-    const { id_buku, id_mahasiswa, status } = req.body;
+    const { id_buku, id_mahasiswa, status, nominal } = req.body;
     // cari id buku
     const findBukuById = await Buku.findByPk(id_buku, {
       transaction,
@@ -16,10 +16,10 @@ const create = async (req, res) => {
       };
     }
     // cari id mahasiswa
-    const findMahasiswaByIdS = await Mahasiswa.findByPk(id_mahasiswa, {
+    const findMahasiswaById = await Mahasiswa.findByPk(id_mahasiswa, {
       transaction,
     });
-    if (!findMahasiswaByIdS) {
+    if (!findMahasiswaById) {
       throw {
         message: "Data mahasiswa tidak ada!",
         statusCode: 404,
@@ -31,6 +31,7 @@ const create = async (req, res) => {
         id_buku,
         id_mahasiswa,
         status,
+        nominal,
       },
       { transaction }
     );
