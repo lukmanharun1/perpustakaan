@@ -168,9 +168,42 @@ const update = async (req, res) => {
     );
   }
 };
+
+const destroy = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const isDeleteMahasiswa = await Mahasiswa.destroy({
+      where: { id },
+    });
+    if (!isDeleteMahasiswa) {
+      throw {
+        message: "Data mahasiswa tidak ada!",
+        statusCode: 404,
+      };
+    }
+    // hapus data di redis
+    await deleteKeys("getMahasiswa:");
+    return response(res, {
+      status: "success",
+      message: "Data mahasiswa berhasil dihapus!",
+    });
+  } catch (error) {
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      error.statusCode || 500
+    );
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   create,
   update,
+  destroy,
 };
