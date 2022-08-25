@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       no_telp: {
         type: DataTypes.STRING(13),
         allowNull: false,
+        unique: true,
       },
       alamat: {
         type: DataTypes.STRING(255),
