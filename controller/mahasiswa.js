@@ -1,6 +1,7 @@
 const { Mahasiswa } = require("../models");
 const response = require("../helper/response");
 const redisConnection = require("../config/redis");
+const { deleteKeys } = require("../helper/redis");
 
 const attributes = ["id", "jurusan", "no_telp", "alamat", "nama_lengkap"];
 const getAll = async (req, res) => {
@@ -91,15 +92,13 @@ const create = async (req, res) => {
     });
     // cek unique no telp mahasiswa
     if (!findCreateMahasiswa[1]) {
-      return response(
-        res,
-        {
-          status: "error",
-          message: "nomor telpon mahasiswa sudah ada!",
-        },
-        400
-      );
+      throw {
+        message: "nomor telpon mahasiswa sudah ada!",
+        statusCode: 400,
+      };
     }
+    // hapus data di redis
+    await deleteKeys("getMahasiswa:");
     return response(
       res,
       {
@@ -119,8 +118,59 @@ const create = async (req, res) => {
     );
   }
 };
+
+const update = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { jurusan, no_telp, alamat, nama_lengkap } = req.body;
+    if (no_telp) {
+      // cek unique no telp mahasiswa
+      const findMahasiswaByNoTelp = await Mahasiswa.findOne({
+        where: { no_telp },
+      });
+      if (findMahasiswaByNoTelp) {
+        throw {
+          message: "nomor telpon mahasiswa sudah ada!",
+          statusCode: 400,
+        };
+      }
+    }
+    const [isUpdateMahasiswa] = await Mahasiswa.update(
+      { jurusan, no_telp, alamat, nama_lengkap },
+      {
+        where: { id },
+      }
+    );
+    if (!isUpdateMahasiswa) {
+      throw {
+        message: "Data mahasiswa tidak ada!",
+        statusCode: 404,
+      };
+    }
+    // hapus data di redis
+    await deleteKeys("getMahasiswa:");
+    return response(
+      res,
+      {
+        status: "success",
+        message: "Data mahasiswa berhasil diupdate!",
+      },
+      200
+    );
+  } catch (error) {
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      error.statusCode || 500
+    );
+  }
+};
 module.exports = {
   getAll,
   getById,
   create,
+  update,
 };
