@@ -77,7 +77,50 @@ const getById = async (req, res) => {
   }
 };
 
+const create = async (req, res) => {
+  try {
+    const { jurusan, no_telp, alamat, nama_lengkap } = req.body;
+    const findCreateMahasiswa = await Mahasiswa.findOrCreate({
+      where: { no_telp },
+      defaults: {
+        jurusan,
+        no_telp,
+        alamat,
+        nama_lengkap,
+      },
+    });
+    // cek unique no telp mahasiswa
+    if (!findCreateMahasiswa[1]) {
+      return response(
+        res,
+        {
+          status: "error",
+          message: "nomor telpon mahasiswa sudah ada!",
+        },
+        400
+      );
+    }
+    return response(
+      res,
+      {
+        status: "success",
+        message: "Data mahasiswa berhasil ditambahkan!",
+      },
+      201
+    );
+  } catch (error) {
+    return response(
+      res,
+      {
+        status: "error",
+        message: error.message,
+      },
+      error.statusCode || 500
+    );
+  }
+};
 module.exports = {
   getAll,
   getById,
+  create,
 };
