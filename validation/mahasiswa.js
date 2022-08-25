@@ -21,8 +21,11 @@ const update = () => [
   body("nama_lengkap").optional().isString().isLength({ min: 3, max: 128 }),
 ];
 
+const destroy = () => [param("id").notEmpty().isUUID()];
+
 module.exports = {
   getById,
   create,
   update,
+  destroy,
 };
