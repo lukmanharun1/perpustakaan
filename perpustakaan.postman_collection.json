@@ -202,7 +202,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tanggal_pengembalian\": \"2022-07-29\",\n    \"id_peminjaman\": \"9f566a7c-8134-43c1-ae78-4d462578e8b8\"\n}",
+							"raw": "{\n    \"tanggal_pengembalian\": \"2022-12-31\",\n    \"id_peminjaman\": \"a803bf1b-8c4e-48ff-ae37-6d95a7d12483\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -231,7 +231,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"id_buku\": \"11e962b6-7465-4800-a139-83eefa59877b\",\n    \"id_mahasiswa\": \"065210bb-d108-41e0-8edb-58480ff5e78c\",\n    \"status\": \"hilang\",\n    \"nominal\": 10000\n}",
+							"raw": "{\n    \"id_buku\": \"d6feb8f5-43d2-41dd-af5d-eb3efbb7bdab\",\n    \"id_mahasiswa\": \"3126446a-186f-45d5-b587-bb3e80bc330c\",\n    \"status\": \"hilang\",\n    \"nominal\": 10000\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -285,7 +285,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"tanggal_pengembalian\": \"2022-08-31\",\n    \"id_buku\": \"58c1901b-39cf-4d45-8aa5-cd2fa9cb8ff2\",\n    \"id_mahasiswa\": \"065210bb-d108-41e0-8edb-58480ff5e78c\"\n}",
+							"raw": "{\n    \"tanggal_pengembalian\": \"2022-12-30\",\n    \"id_buku\": \"27f38622-8aae-4d14-8338-f806663a8056\",\n    \"id_mahasiswa\": \"3126446a-186f-45d5-b587-bb3e80bc330c\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -347,17 +347,83 @@
 					"response": []
 				},
 				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jurusan\": \"Rekayasa Perangkat Lunak\",\n    \"no_telp\": \"089639189895\",\n    \"alamat\": \"Jalan Pegangsaan Timur No. 56, Jakarta Pusat\",\n    \"nama_lengkap\": \"Lukman Harun\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}mahasiswa",
+							"host": [
+								"{{host}}mahasiswa"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"jurusan\": \"Rekayasa Perangkat Lunak\",\n    \"no_telp\": \"089639189892\",\n    \"alamat\": \"Jalan Pegangsaan Timur No. 56, Jakarta Pusat\",\n    \"nama_lengkap\": \"Lukman\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{host}}mahasiswa/79fd3555-9edb-4597-8778-f95b432e9a45",
+							"host": [
+								"{{host}}mahasiswa"
+							],
+							"path": [
+								"79fd3555-9edb-4597-8778-f95b432e9a45"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "getById",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{host}}mahasiswa/065210bb-d108-41e0-8edb-58480ff5e78c",
+							"raw": "{{host}}mahasiswa/cd312888-e6ae-4d1a-8167-63f5b8ff0634",
 							"host": [
 								"{{host}}mahasiswa"
 							],
 							"path": [
-								"065210bb-d108-41e0-8edb-58480ff5e78c"
+								"cd312888-e6ae-4d1a-8167-63f5b8ff0634"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{host}}mahasiswa/3126446a-186f-45d5-b587-bb3e80bc330c",
+							"host": [
+								"{{host}}mahasiswa"
+							],
+							"path": [
+								"3126446a-186f-45d5-b587-bb3e80bc330c"
 							]
 						}
 					},
