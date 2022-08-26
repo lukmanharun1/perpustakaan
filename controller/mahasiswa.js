@@ -1,4 +1,4 @@
-const { Mahasiswa } = require("../models");
+const { Mahasiswa, Denda, Peminjaman, sequelize } = require("../models");
 const response = require("../helper/response");
 const redisConnection = require("../config/redis");
 const { deleteKeys } = require("../helper/redis");
@@ -170,11 +170,13 @@ const update = async (req, res) => {
 };
 
 const destroy = async (req, res) => {
+  const transaction = await sequelize.transaction();
   try {
     const { id } = req.params;
 
     const isDeleteMahasiswa = await Mahasiswa.destroy({
       where: { id },
+      transaction,
     });
     if (!isDeleteMahasiswa) {
       throw {
@@ -182,13 +184,19 @@ const destroy = async (req, res) => {
         statusCode: 404,
       };
     }
-    // hapus data di redis
-    await deleteKeys("getMahasiswa:");
+    // hapus data peminjaman | denda | redis
+    await Promise.all([
+      Peminjaman.destroy({ where: { id_mahasiswa: id }, transaction }),
+      Denda.destroy({ where: { id_mahasiswa: id }, transaction }),
+      deleteKeys("getMahasiswa:"),
+    ]);
+    transaction.commit();
     return response(res, {
       status: "success",
       message: "Data mahasiswa berhasil dihapus!",
     });
   } catch (error) {
+    await transaction.rollback();
     return response(
       res,
       {
